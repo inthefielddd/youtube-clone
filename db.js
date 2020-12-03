@@ -1,21 +1,17 @@
+import monogoose from "mongoose";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
-
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrlParser:true,
+monogoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
     useFindAndModify: false,
-    useUnifiedTopology: true 
+    useUnifiedTopology: true,
 });
 
-const db = mongoose.connection;
+const db = monogoose.connection;
 
-const handleOpen = ()=> console.log("✅Connected to DB");
-const handleError = error =>  console.log(`❌ Error on DB Connection:${error}`);
+const handleOpen = () => console.log("✅ connected to DB");
+const handleError = (error) => console.log(`❌ Error on DB Conncetion:${error}`);
 
-// DB를 한번 실행할떄마다
-db.once("open",handleOpen);
-db.on("error",handleError);
-
-export default db;
+db.once("open", handleOpen);
+db.on("error", handleError);
