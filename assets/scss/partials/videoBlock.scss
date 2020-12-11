@@ -1,0 +1,15 @@
+.videoBlock{
+    video{
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+    a{
+        color:$black;
+        .videoBlock__title{
+            font-size:18px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+    }
+ 
+}
