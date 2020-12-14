@@ -1,5 +1,6 @@
 import monogoose from "mongoose";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 monogoose.connect(process.env.MONGO_URL, {

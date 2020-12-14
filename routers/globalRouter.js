@@ -5,16 +5,15 @@ import routes from "../routes";
 
 const globalRouter = express.Router();
 
-globalRouter.get(routes.home, home)
+globalRouter.get(routes.home, home);
 
-globalRouter.get(routes.search, search)
+globalRouter.get(routes.search, search);
 //join
-globalRouter.get(routes.join, getJoin)
-globalRouter.post(routes.join, postJoin)
+globalRouter.get(routes.join, getJoin);
+globalRouter.post(routes.join, postJoin, postLogin);
 
 //login
-globalRouter.get(routes.login, getLogin)
-globalRouter.post(routes.login, postLogin
-)
-globalRouter.get(routes.logout, logout)
+globalRouter.get(routes.login, getLogin);
+globalRouter.post(routes.login, postLogin);
+globalRouter.get(routes.logout, logout);
 export default globalRouter;
