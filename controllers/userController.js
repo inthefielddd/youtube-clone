@@ -14,7 +14,7 @@ export const postJoin = async (req, res, next) => {
         res.render("join", { pageTitle: "Join" });
     } else {
         try {
-            const user = await User.create({
+            const user = await User({
                 name,
                 email,
             });
@@ -22,8 +22,8 @@ export const postJoin = async (req, res, next) => {
             next();
         } catch (error) {
             console.log(error);
+            res.redirect(routes.home);
         }
-        res.redirect(routes.home);
     }
 };
 export const getLogin = (req, res) => {
@@ -32,12 +32,56 @@ export const getLogin = (req, res) => {
 
 export const postLogin = passport.authenticate("local", { successRedirect: routes.home, failureRedirect: routes.login });
 
-export const logout = (req, res) => {
-    //To Do: Process Log Out
+export const githubLogin = passport.authenticate("github");
+
+export const githubLoginCallback = async (_, __, profile, cb) => {
+    const {
+        _json: { id, avatar_url: avatarUrl, name, email },
+    } = profile;
+    try {
+        const user = await User.findOne({ email });
+        if (user) {
+            user.githubId = id;
+            user.save();
+            return cb(null, user);
+        }
+        const newUser = await User.create({
+            email,
+            name,
+            githubId: id,
+            avatarUrl,
+        });
+        return cb(null, newUser);
+    } catch (error) {
+        return cb(error);
+    }
+};
+export const postGithubLogin = (req, res) => {
+    //github로 로그인이 되었을때 home을 출력
     res.redirect(routes.home);
 };
 
-export const userDetail = (req, res) => res.render("userDetail", { pageTitle: "User Detail" });
+export const logout = (req, res) => {
+    req.logout();
+    res.redirect(routes.home);
+};
+//me(profile)
+export const getMe = (req, res) => {
+    res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+};
+
+export const userDetail = async (req, res) => {
+    const {
+        params: { id },
+    } = req;
+    try {
+        const user = await User.findById(id);
+        res.render("userDetail", { pageTitle: "User Detail", user });
+    } catch (error) {
+        console.log(error);
+        res.redirect(routes.home);
+    }
+};
 
 export const editProfile = (req, res) => res.render("editProfile", { pageTitle: "Edit Profile" });
 
