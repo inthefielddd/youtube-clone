@@ -2,6 +2,7 @@ import multer from "multer";
 import routes from "./routes";
 
 const multerVideo = multer({ dest: "uploads/videos/" });
+const multerAvatar = multer({ dest: "uploads/avatars" });
 
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "WeTube";
@@ -28,4 +29,7 @@ export const onlyPrivate = (req, res, next) => {
         res.redirect(routes.home);
     }
 };
+
+//single('')=>form에 저장했던 name값을 적어준다
 export const uploadVideo = multerVideo.single("videoFile");
+export const uploadAvatar = multerAvatar.single("avatar");
